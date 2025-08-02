@@ -1,19 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - Dice-Roller</title>
-    {%  endhead %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endblock %}
 </head>
 <body>
-    
+
     <div id="header">
-        <h1>Awesome Dice-Roller</h1>
+        <h1>🎲 Awesome Dice-Roller 🎲</h1>
+        <nav class="nav-menu">
+            <a href="/">🏠 Home</a>
+            <a href="/dice-roller">🎲 Würfel-Roller</a>
+            <a href="/leaderboard">🏆 Leaderboard</a>
+            <a href="/tournaments">⚔️ Turniere</a>
+            <a href="/about">📖 Über uns</a>
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard">📊 Dashboard</a>
+                <div class="user-menu">
+                    <span class="user-greeting">👋 {{ current_user.username }}</span>
+                    <a href="/auth/logout" class="logout-btn">🚪 Logout</a>
+                </div>
+            {% else %}
+                <a href="/auth/login">🔑 Login</a>
+                <a href="/auth/register" class="register-btn">✨ Registrieren</a>
+            {% endif %}
+        </nav>
     </div>
 
-    <div id="content"></div>
-    <div id="footer"></div>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <div id="footer">
+        <p>&copy; 2024 Dice-Roller App - Made with ❤️ and Flask</p>
+    </div>
 </body>
 </html>

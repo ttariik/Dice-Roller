@@ -1,0 +1,447 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Turniere{% endblock %}
+
+{% block content %}
+<div class="tournament-container">
+    <div class="tournament-header">
+        <h1 class="tournament-title">🏆 Dice-Roller Turniere 🏆</h1>
+        <p class="tournament-subtitle">Tritt gegen andere Spieler an und gewinne tolle Preise!</p>
+    </div>
+    
+    <div class="tournament-tabs">
+        <button class="tab-btn active" data-tab="active">🔥 Aktive Turniere</button>
+        <button class="tab-btn" data-tab="upcoming">⏰ Kommende</button>
+        <button class="tab-btn" data-tab="finished">✅ Beendet</button>
+        <button class="tab-btn" data-tab="create">➕ Erstellen</button>
+    </div>
+    
+    <!-- Aktive Turniere -->
+    <div class="tab-content active" id="active-tab">
+        <div class="tournaments-grid">
+            <div class="tournament-card featured">
+                <div class="tournament-badge">🔥 FEATURED</div>
+                <div class="tournament-info">
+                    <h3>🎯 Wöchentliche D20-Challenge</h3>
+                    <p>Wer schafft die meisten natürlichen 20er?</p>
+                    <div class="tournament-stats">
+                        <span>👥 127 Teilnehmer</span>
+                        <span>💰 1000 Punkte</span>
+                        <span>⏱️ 2 Tage verbleibend</span>
+                    </div>
+                </div>
+                <div class="tournament-actions">
+                    <button class="btn btn-primary">🚀 Teilnehmen</button>
+                    <button class="btn btn-secondary">📊 Rangliste</button>
+                </div>
+            </div>
+            
+            <div class="tournament-card">
+                <div class="tournament-info">
+                    <h3>🎲 Speed Dice Marathon</h3>
+                    <p>100 Würfe so schnell wie möglich!</p>
+                    <div class="tournament-stats">
+                        <span>👥 85 Teilnehmer</span>
+                        <span>💰 500 Punkte</span>
+                        <span>⏱️ 5 Stunden verbleibend</span>
+                    </div>
+                </div>
+                <div class="tournament-actions">
+                    <button class="btn btn-primary">🚀 Teilnehmen</button>
+                    <button class="btn btn-secondary">📊 Rangliste</button>
+                </div>
+            </div>
+            
+            <div class="tournament-card">
+                <div class="tournament-info">
+                    <h3>🍀 Lucky Streak Challenge</h3>
+                    <p>Längste Serie hoher Würfe gewinnt!</p>
+                    <div class="tournament-stats">
+                        <span>👥 203 Teilnehmer</span>
+                        <span>💰 750 Punkte</span>
+                        <span>⏱️ 1 Tag verbleibend</span>
+                    </div>
+                </div>
+                <div class="tournament-actions">
+                    <button class="btn btn-primary">🚀 Teilnehmen</button>
+                    <button class="btn btn-secondary">📊 Rangliste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Kommende Turniere -->
+    <div class="tab-content" id="upcoming-tab">
+        <div class="tournaments-grid">
+            <div class="tournament-card upcoming">
+                <div class="tournament-badge">⏰ BALD</div>
+                <div class="tournament-info">
+                    <h3>🏆 Grand Championship 2024</h3>
+                    <p>Das größte Turnier des Jahres!</p>
+                    <div class="tournament-stats">
+                        <span>👥 Max 500 Teilnehmer</span>
+                        <span>💰 10.000 Punkte</span>
+                        <span>📅 Startet in 3 Tagen</span>
+                    </div>
+                </div>
+                <div class="tournament-actions">
+                    <button class="btn btn-primary">📝 Voranmelden</button>
+                    <button class="btn btn-secondary">ℹ️ Details</button>
+                </div>
+            </div>
+            
+            <div class="tournament-card upcoming">
+                <div class="tournament-info">
+                    <h3>🎮 Beginner's Tournament</h3>
+                    <p>Speziell für neue Spieler!</p>
+                    <div class="tournament-stats">
+                        <span>👥 Max 100 Teilnehmer</span>
+                        <span>💰 300 Punkte</span>
+                        <span>📅 Startet morgen</span>
+                    </div>
+                </div>
+                <div class="tournament-actions">
+                    <button class="btn btn-primary">📝 Voranmelden</button>
+                    <button class="btn btn-secondary">ℹ️ Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Turniert erstellen -->
+    <div class="tab-content" id="create-tab">
+        <div class="create-tournament">
+            <h3>🏆 Eigenes Turnier erstellen</h3>
+            <form class="tournament-form">
+                <div class="form-group">
+                    <label>Turnier-Name</label>
+                    <input type="text" placeholder="z.B. Meine D6-Challenge">
+                </div>
+                
+                <div class="form-group">
+                    <label>Beschreibung</label>
+                    <textarea placeholder="Beschreibe dein Turnier..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Würfel-Typ</label>
+                        <select>
+                            <option>Alle Würfel</option>
+                            <option>Nur D6</option>
+                            <option>Nur D20</option>
+                            <option>Benutzerdefiniert</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Max. Teilnehmer</label>
+                        <input type="number" value="50" min="2" max="500">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dauer</label>
+                        <select>
+                            <option>1 Stunde</option>
+                            <option>1 Tag</option>
+                            <option>1 Woche</option>
+                            <option>1 Monat</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Eintrittsgebühr (Punkte)</label>
+                        <input type="number" value="0" min="0" max="1000">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Turnier-Regeln</label>
+                    <div class="rules-checkboxes">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span>Höchste Einzelwürfe gewinnen</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span>Längste Streak zählt</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span>Speed-Modus (Zeit limit)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-large">
+                    🏆 Turnier erstellen
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab + '-tab').classList.add('active');
+    });
+});
+
+// Mock tournament actions
+document.addEventListener('click', (e) => {
+    if (e.target.textContent.includes('Teilnehmen')) {
+        alert('🎉 Du bist dem Turnier beigetreten!');
+    } else if (e.target.textContent.includes('Rangliste')) {
+        alert('📊 Rangliste wird geladen...');
+    } else if (e.target.textContent.includes('Voranmelden')) {
+        alert('📝 Voranmeldung erfolgreich!');
+    }
+});
+</script>
+
+<style>
+.tournament-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.tournament-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.tournament-title {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tournament-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+}
+
+.tournament-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.tab-btn:hover, .tab-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tournaments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.tournament-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tournament-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tournament-card.featured {
+    border: 2px solid #ff6b6b;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+}
+
+.tournament-card.upcoming {
+    border: 2px solid #4ecdc4;
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+}
+
+.tournament-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.tournament-info h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.tournament-info p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.tournament-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tournament-stats span {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+.tournament-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.create-tournament {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.create-tournament h3 {
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.tournament-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.rules-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.btn-large {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .tournaments-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .tournament-title {
+        font-size: 2rem;
+    }
+    
+    .tournament-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

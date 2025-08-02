@@ -1,0 +1,387 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block content %}
+<div class="leaderboard-container">
+    <div class="leaderboard-header">
+        <h1 class="leaderboard-title">🏆 Dice-Roller Leaderboard 🏆</h1>
+        <p class="leaderboard-subtitle">Die aktivsten Würfel-Spieler der Community!</p>
+    </div>
+    
+    <div class="leaderboard-filters">
+        <button class="filter-btn active" data-filter="all">🎲 Alle Würfe</button>
+        <button class="filter-btn" data-filter="lucky">🍀 Glückspilze</button>
+        <button class="filter-btn" data-filter="active">⚡ Aktivste</button>
+        <button class="filter-btn" data-filter="streaks">🔥 Längste Streaks</button>
+    </div>
+    
+    <div class="leaderboard-content">
+        <div class="leaderboard-table">
+            <div class="table-header">
+                <div class="rank">Rang</div>
+                <div class="player">Spieler</div>
+                <div class="stats">Statistiken</div>
+                <div class="achievements">Erfolge</div>
+            </div>
+            
+            <!-- Mock Data - In der echten App würde das aus der Datenbank kommen -->
+            <div class="table-row">
+                <div class="rank">
+                    <span class="rank-number">1</span>
+                    <span class="rank-medal">🥇</span>
+                </div>
+                <div class="player">
+                    <div class="player-avatar">🎯</div>
+                    <div class="player-info">
+                        <div class="player-name">DiceKing2024</div>
+                        <div class="player-title">🏆 Würfel-Legende</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">🎲 1,337 Würfe</div>
+                    <div class="stat-item">📊 Ø 12.4</div>
+                    <div class="stat-item">🍀 Lucky D20: 20</div>
+                </div>
+                <div class="achievements">
+                    <span class="achievement">🔥</span>
+                    <span class="achievement">⭐</span>
+                    <span class="achievement">💎</span>
+                </div>
+            </div>
+            
+            <div class="table-row">
+                <div class="rank">
+                    <span class="rank-number">2</span>
+                    <span class="rank-medal">🥈</span>
+                </div>
+                <div class="player">
+                    <div class="player-avatar">🎲</div>
+                    <div class="player-info">
+                        <div class="player-name">RollMaster</div>
+                        <div class="player-title">⚡ Würfel-Experte</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">🎲 892 Würfe</div>
+                    <div class="stat-item">📊 Ø 11.8</div>
+                    <div class="stat-item">🍀 Lucky D20: 19</div>
+                </div>
+                <div class="achievements">
+                    <span class="achievement">🔥</span>
+                    <span class="achievement">⭐</span>
+                </div>
+            </div>
+            
+            <div class="table-row">
+                <div class="rank">
+                    <span class="rank-number">3</span>
+                    <span class="rank-medal">🥉</span>
+                </div>
+                <div class="player">
+                    <div class="player-avatar">🍀</div>
+                    <div class="player-info">
+                        <div class="player-name">LuckyDice</div>
+                        <div class="player-title">🍀 Glückspilz</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">🎲 654 Würfe</div>
+                    <div class="stat-item">📊 Ø 13.2</div>
+                    <div class="stat-item">🍀 Lucky D20: 20</div>
+                </div>
+                <div class="achievements">
+                    <span class="achievement">🍀</span>
+                    <span class="achievement">⭐</span>
+                </div>
+            </div>
+            
+            {% if current_user.is_authenticated %}
+            <div class="table-row your-rank">
+                <div class="rank">
+                    <span class="rank-number">42</span>
+                    <span class="rank-indicator">👤</span>
+                </div>
+                <div class="player">
+                    <div class="player-avatar">😊</div>
+                    <div class="player-info">
+                        <div class="player-name">{{ current_user.username }} (Du)</div>
+                        <div class="player-title">🌟 Aufsteiger</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">🎲 {{ current_user.total_rolls }} Würfe</div>
+                    <div class="stat-item">📊 Ø 10.5</div>
+                    <div class="stat-item">🍀 Lucky D6: 6</div>
+                </div>
+                <div class="achievements">
+                    <span class="achievement">🌟</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="achievements-section">
+            <h3>🏆 Verfügbare Achievements</h3>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-info">
+                        <h4>Hot Streak</h4>
+                        <p>100 Würfe in Folge</p>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">⭐</div>
+                    <div class="achievement-info">
+                        <h4>Würfel-Meister</h4>
+                        <p>Alle Würfeltypen benutzt</p>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">🍀</div>
+                    <div class="achievement-info">
+                        <h4>Glückspilz</h4>
+                        <p>10x maximale Zahl gewürfelt</p>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">💎</div>
+                    <div class="achievement-info">
+                        <h4>Diamant</h4>
+                        <p>1000 Würfe geschafft</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.leaderboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.leaderboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.leaderboard-title {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.leaderboard-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+}
+
+.leaderboard-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.leaderboard-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaderboard-table {
+    margin-bottom: 3rem;
+}
+
+.table-header, .table-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 200px 120px;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+}
+
+.table-header {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: white;
+}
+
+.table-row {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.table-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.your-rank {
+    background: rgba(255, 215, 0, 0.2) !important;
+    border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.rank-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.rank-medal {
+    font-size: 1.2rem;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.player-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.player-name {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.player-title {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.stats {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.stat-item {
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.achievements {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.achievement {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.achievements-section h3 {
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.achievement-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement-info h4 {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-info p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .table-header, .table-row {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .leaderboard-title {
+        font-size: 2rem;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

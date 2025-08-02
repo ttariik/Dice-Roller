@@ -1,0 +1,412 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Geteilter Würfelwurf{% endblock %}
+
+{% block content %}
+<div class="share-container">
+    <div class="share-header">
+        <h1 class="share-title">🎲 Geteilter Würfelwurf 🎲</h1>
+        <p class="share-subtitle">Schau dir diesen epischen Würfelwurf an!</p>
+    </div>
+    
+    <div class="share-content">
+        <div class="shared-roll-card">
+            <div class="roll-visual">
+                <div class="dice-display">
+                    {% if roll.dice_count == 1 %}
+                        <div class="single-dice">
+                            <div class="dice-icon">🎲</div>
+                            <div class="dice-result">{{ roll.results[0] }}</div>
+                            <div class="dice-type">D{{ roll.dice_sides }}</div>
+                        </div>
+                    {% else %}
+                        <div class="multiple-dice">
+                            <div class="dice-summary">
+                                <span class="dice-count">{{ roll.dice_count }}x</span>
+                                <span class="dice-type">D{{ roll.dice_sides }}</span>
+                            </div>
+                            <div class="dice-results">
+                                {% for result in roll.results %}
+                                    <span class="individual-result">{{ result }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="total-result">
+                                <span>Gesamt: {{ roll.total }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="result-emoji">
+                    {% if roll.total <= 3 %}
+                        😅
+                    {% elif roll.total <= 6 %}
+                        😐
+                    {% elif roll.total <= 10 %}
+                        😊
+                    {% elif roll.total <= 15 %}
+                        🎉
+                    {% elif roll.total <= 20 %}
+                        🔥
+                    {% else %}
+                        ⭐
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="roll-info">
+                <div class="roll-details">
+                    {% if roll.dice_count == 1 %}
+                        <h2>Einzelwurf: {{ roll.results[0] }}</h2>
+                        <p>Gewürfelt mit einem D{{ roll.dice_sides }}</p>
+                    {% else %}
+                        <h2>{{ roll.dice_count }}x D{{ roll.dice_sides }} = {{ roll.total }}</h2>
+                        <p>Einzelergebnisse: {{ roll.results|join(', ') }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="roll-meta">
+                    <span class="timestamp">
+                        🕐 {{ roll.timestamp.strftime('%d.%m.%Y um %H:%M') }} Uhr
+                    </span>
+                    {% if roll.user %}
+                        <span class="player">
+                            👤 Von {{ roll.user.username }}
+                        </span>
+                    {% else %}
+                        <span class="player">
+                            👤 Von einem Gast
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="share-actions">
+            <button class="btn btn-primary" onclick="shareOnSocial('twitter')">
+                🐦 Auf Twitter teilen
+            </button>
+            <button class="btn btn-primary" onclick="shareOnSocial('facebook')">
+                📘 Auf Facebook teilen
+            </button>
+            <button class="btn btn-secondary" onclick="copyToClipboard()">
+                📋 Link kopieren
+            </button>
+            <a href="/dice-roller" class="btn btn-secondary">
+                🎲 Selbst würfeln
+            </a>
+        </div>
+        
+        <div class="challenge-section">
+            <h3>🏆 Herausforderung</h3>
+            <p>Kannst du dieses Ergebnis toppen?</p>
+            <a href="/dice-roller" class="btn btn-challenge">
+                ⚡ Herausforderung annehmen!
+            </a>
+        </div>
+        
+        <div class="stats-comparison">
+            <h3>📊 Wie selten ist dieser Wurf?</h3>
+            <div class="probability-info">
+                {% if roll.dice_count == 1 %}
+                    <div class="prob-item">
+                        <span class="prob-label">Wahrscheinlichkeit für {{ roll.results[0] }}:</span>
+                        <span class="prob-value">{{ "%.2f"|format(100/roll.dice_sides) }}%</span>
+                    </div>
+                {% else %}
+                    <div class="prob-item">
+                        <span class="prob-label">Durchschnittsergebnis:</span>
+                        <span class="prob-value">{{ "%.1f"|format((roll.dice_sides + 1) * roll.dice_count / 2) }}</span>
+                    </div>
+                    <div class="prob-item">
+                        <span class="prob-label">Dein Ergebnis:</span>
+                        <span class="prob-value {{ 'above-average' if roll.total > (roll.dice_sides + 1) * roll.dice_count / 2 else 'below-average' }}">
+                            {{ roll.total }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function shareOnSocial(platform) {
+    const url = window.location.href;
+    const text = `🎲 Schau dir meinen epischen Würfelwurf an! {% if roll.dice_count == 1 %}{{ roll.results[0] }} mit D{{ roll.dice_sides }}{% else %}{{ roll.dice_count }}x D{{ roll.dice_sides }} = {{ roll.total }}{% endif %}`;
+    
+    let shareUrl = '';
+    
+    if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    }
+    
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+}
+
+function copyToClipboard() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('🎉 Link wurde in die Zwischenablage kopiert!');
+    }).catch(() => {
+        alert('❌ Konnte Link nicht kopieren');
+    });
+}
+</script>
+
+<style>
+.share-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.share-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.share-title {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.share-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+}
+
+.shared-roll-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 2rem;
+}
+
+.dice-display {
+    margin-bottom: 2rem;
+}
+
+.single-dice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dice-icon {
+    font-size: 4rem;
+}
+
+.dice-result {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dice-type {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.multiple-dice {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dice-summary {
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+}
+
+.dice-results {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.individual-result {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-width: 60px;
+}
+
+.total-result {
+    font-size: 3rem;
+    color: #4ecdc4;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-emoji {
+    font-size: 5rem;
+    margin: 2rem 0;
+}
+
+.roll-info {
+    margin-top: 2rem;
+}
+
+.roll-details h2 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.roll-details p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.roll-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.roll-meta span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.share-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.challenge-section {
+    background: rgba(255, 107, 107, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.challenge-section h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.challenge-section p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.btn-challenge {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-challenge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.stats-comparison {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-comparison h3 {
+    color: white;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.probability-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.prob-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.prob-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.prob-value {
+    color: white;
+    font-weight: bold;
+}
+
+.above-average {
+    color: #4ecdc4 !important;
+}
+
+.below-average {
+    color: #ff6b6b !important;
+}
+
+@media (max-width: 768px) {
+    .share-title {
+        font-size: 2rem;
+    }
+    
+    .shared-roll-card {
+        padding: 2rem;
+    }
+    
+    .dice-result {
+        font-size: 4rem;
+    }
+    
+    .total-result {
+        font-size: 2rem;
+    }
+    
+    .roll-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .share-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .prob-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

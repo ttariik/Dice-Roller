@@ -1,0 +1,144 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Über uns{% endblock %}
+
+{% block content %}
+<div class="hero-content">
+    <h1 class="hero-title">📖 Über den Dice-Roller</h1>
+    
+    <div class="about-content">
+        <div class="about-section">
+            <h2 style="color: white; margin-bottom: 1rem;">🎯 Was ist das?</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; line-height: 1.8;">
+                Der Dice-Roller ist eine moderne Web-Anwendung, die mit Flask entwickelt wurde. 
+                Sie bietet eine einfache und intuitive Möglichkeit, virtuelle Würfel zu werfen - 
+                perfekt für Tabletop-Spiele, Entscheidungsfindung oder einfach nur zum Spaß!
+            </p>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Technologie</h3>
+                <p>Gebaut mit Flask (Python), HTML5, CSS3 und JavaScript</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎲</div>
+                <h3>Würfeltypen</h3>
+                <p>D4, D6, D8, D10, D12, D20 - alle klassischen RPG-Würfel</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Responsive</h3>
+                <p>Funktioniert perfekt auf Desktop, Tablet und Smartphone</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Datenschutz</h3>
+                <p>Keine Cookies, keine Tracking, rein lokal</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Schnell</h3>
+                <p>Blitzschnelle Ladezeiten und sofortige Ergebnisse</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Modern</h3>
+                <p>Glassmorphism-Design mit schönen Animationen</p>
+            </div>
+        </div>
+
+        <div class="about-section" style="margin-top: 3rem;">
+            <h2 style="color: white; margin-bottom: 1rem;">🚀 Features</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-bullet">✨</span>
+                    <span>Einzelne Würfel von D4 bis D20</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-bullet">🎯</span>
+                    <span>Mehrere Würfel gleichzeitig werfen</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-bullet">📜</span>
+                    <span>Historie der letzten 10 Würfe</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-bullet">🎭</span>
+                    <span>Animierte Würfel mit visuellen Effekten</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-bullet">😊</span>
+                    <span>Emoticons basierend auf dem Ergebnis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section" style="margin-top: 3rem;">
+            <h2 style="color: white; margin-bottom: 1rem;">🎮 Verwendung</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; line-height: 1.8;">
+                Perfect für:
+            </p>
+            <ul style="color: rgba(255, 255, 255, 0.8); margin: 1rem 0; list-style: none;">
+                <li>🏰 Dungeons & Dragons Spiele</li>
+                <li>🎲 Andere Tabletop-RPGs</li>
+                <li>🎯 Brettspiele</li>
+                <li>🤔 Zufällige Entscheidungen</li>
+                <li>🎊 Party-Spiele</li>
+                <li>📚 Unterricht und Bildung</li>
+            </ul>
+        </div>
+
+        <div class="cta-section" style="margin-top: 3rem;">
+            <a href="/dice-roller" class="btn btn-primary">🎲 Jetzt würfeln!</a>
+            <a href="/" class="btn btn-secondary">🏠 Zurück zur Startseite</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-content {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+.feature-bullet {
+    font-size: 1.2rem;
+    min-width: 30px;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        text-align: center;
+    }
+    
+    .about-section {
+        padding: 1rem;
+    }
+}
+</style>
+{% endblock %}

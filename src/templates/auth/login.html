@@ -1,0 +1,145 @@
+{% extends "../layout.html.j2" %}
+
+{% block title %}Anmeldung{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">🔑 Anmeldung</h1>
+        <p class="auth-subtitle">Willkommen zurück! Melde dich an für unbegrenzte Würfe.</p>
+        
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="email_or_username">📧 E-Mail oder Benutzername</label>
+                <input type="text" id="email_or_username" name="email_or_username" required 
+                       placeholder="deine@email.de oder benutzername">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 Passwort</label>
+                <input type="password" id="password" name="password" required 
+                       placeholder="Dein Passwort">
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="remember" name="remember">
+                    <span class="checkmark"></span>
+                    Angemeldet bleiben
+                </label>
+            </div>
+            
+            <div id="error-messages" class="error-messages"></div>
+            
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                🔑 Anmelden
+            </button>
+        </form>
+        
+        <div class="auth-divider">
+            <span>oder</span>
+        </div>
+        
+        <button class="btn btn-google btn-full" onclick="googleAuth()">
+            🌐 Mit Google anmelden
+        </button>
+        
+        <div class="auth-footer">
+            <p>Noch kein Konto? <a href="/auth/register">Hier registrieren</a></p>
+            <p><a href="/dice-roller">🎲 Als Gast weiter (10 kostenlose Würfe)</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const errorDiv = document.getElementById('error-messages');
+    
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Anmeldung läuft...';
+    errorDiv.innerHTML = '';
+    
+    // Form data
+    const formData = {
+        email_or_username: document.getElementById('email_or_username').value,
+        password: document.getElementById('password').value,
+        remember: document.getElementById('remember').checked
+    };
+    
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Erfolgreiche Anmeldung
+            showSuccess('Anmeldung erfolgreich! Du wirst weitergeleitet...');
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1500);
+        } else {
+            showError(data.error || 'Anmeldung fehlgeschlagen');
+            resetSubmitButton();
+        }
+    } catch (error) {
+        showError('Netzwerkfehler. Bitte versuche es erneut.');
+        resetSubmitButton();
+    }
+});
+
+function showError(error) {
+    const errorDiv = document.getElementById('error-messages');
+    errorDiv.innerHTML = `<div class="error-message">❌ ${error}</div>`;
+}
+
+function showSuccess(message) {
+    const errorDiv = document.getElementById('error-messages');
+    errorDiv.innerHTML = `<div class="success-message">✅ ${message}</div>`;
+}
+
+function resetSubmitButton() {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '🔑 Anmelden';
+}
+
+function googleAuth() {
+    // TODO: Google OAuth implementieren
+    alert('Google-Anmeldung wird bald verfügbar sein!');
+}
+</script>
+
+<style>
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.checkmark {
+    margin-left: 0.5rem;
+}
+</style>
+{% endblock %}

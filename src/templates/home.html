@@ -1,0 +1,53 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">🎲 Willkommen beim Dice-Roller! 🎲</h1>
+        <p class="hero-description">
+            Entdecke die Welt der Würfel! Ob für Tabletop-Spiele, Entscheidungen 
+            oder einfach nur zum Spaß - hier findest du den perfekten virtuellen Würfel.
+        </p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Verschiedene Würfel</h3>
+                <p>D4, D6, D8, D10, D12, D20 und mehr!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Schnell & Einfach</h3>
+                <p>Ein Klick und der Würfel rollt!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Schönes Design</h3>
+                <p>Moderne und ansprechende Benutzeroberfläche</p>
+            </div>
+        </div>
+        <div class="cta-section">
+            <a href="/dice-roller" class="btn btn-primary">🎲 Jetzt Würfeln!</a>
+            <a href="/about" class="btn btn-secondary">📖 Mehr erfahren</a>
+        </div>
+    </div>
+</div>
+
+<div class="stats-section">
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Würfelwürfe möglich</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">7+</span>
+            <span class="stat-label">Würfeltypen</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Zufällig & Fair</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

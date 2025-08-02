@@ -1,0 +1,297 @@
+{% extends "../layout.html.j2" %}
+
+{% block title %}Registrierung{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">✨ Konto erstellen</h1>
+        <p class="auth-subtitle">Registriere dich für unbegrenzte Würfe und erweiterte Features!</p>
+        
+        <form id="registerForm" class="auth-form">
+            <div class="form-group">
+                <label for="username">🧑‍💼 Benutzername</label>
+                <input type="text" id="username" name="username" required 
+                       placeholder="Dein Benutzername" minlength="3">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">📧 E-Mail-Adresse</label>
+                <input type="email" id="email" name="email" required 
+                       placeholder="deine@email.de">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">📱 Telefonnummer (optional)</label>
+                <input type="tel" id="phone" name="phone" 
+                       placeholder="+49 123 456789">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 Passwort</label>
+                <input type="password" id="password" name="password" required 
+                       placeholder="Mindestens 6 Zeichen" minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">🔒 Passwort bestätigen</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required 
+                       placeholder="Passwort wiederholen">
+            </div>
+            
+            <div id="error-messages" class="error-messages"></div>
+            
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                ✨ Konto erstellen
+            </button>
+        </form>
+        
+        <div class="auth-divider">
+            <span>oder</span>
+        </div>
+        
+        <button class="btn btn-google btn-full" onclick="googleAuth()">
+            🌐 Mit Google anmelden
+        </button>
+        
+        <div class="auth-footer">
+            <p>Bereits ein Konto? <a href="/auth/login">Hier anmelden</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const errorDiv = document.getElementById('error-messages');
+    
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Registrierung läuft...';
+    errorDiv.innerHTML = '';
+    
+    // Form data
+    const formData = {
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        password: document.getElementById('password').value
+    };
+    
+    // Password confirmation check
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    if (formData.password !== confirmPassword) {
+        showErrors(['Passwörter stimmen nicht überein']);
+        resetSubmitButton();
+        return;
+    }
+    
+    try {
+        const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Erfolgreiche Registrierung
+            showSuccess('Registrierung erfolgreich! Du wirst weitergeleitet...');
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1500);
+        } else {
+            showErrors(data.errors || [data.error || 'Registrierung fehlgeschlagen']);
+            resetSubmitButton();
+        }
+    } catch (error) {
+        showErrors(['Netzwerkfehler. Bitte versuche es erneut.']);
+        resetSubmitButton();
+    }
+});
+
+function showErrors(errors) {
+    const errorDiv = document.getElementById('error-messages');
+    errorDiv.innerHTML = errors.map(error => 
+        `<div class="error-message">❌ ${error}</div>`
+    ).join('');
+}
+
+function showSuccess(message) {
+    const errorDiv = document.getElementById('error-messages');
+    errorDiv.innerHTML = `<div class="success-message">✅ ${message}</div>`;
+}
+
+function resetSubmitButton() {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '✨ Konto erstellen';
+}
+
+function googleAuth() {
+    // TODO: Google OAuth implementieren
+    alert('Google-Anmeldung wird bald verfügbar sein!');
+}
+</script>
+
+<style>
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-title {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-full {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.btn-google {
+    background: #4285f4;
+    color: white;
+    border: none;
+}
+
+.btn-google:hover {
+    background: #3367d6;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.auth-divider:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.auth-divider span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.auth-footer p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-footer a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.error-messages {
+    margin: 1rem 0;
+}
+
+.error-message {
+    background: rgba(255, 0, 0, 0.2);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    border-left: 4px solid #ff4444;
+}
+
+.success-message {
+    background: rgba(0, 255, 0, 0.2);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    border-left: 4px solid #44ff44;
+}
+
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .auth-title {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock %}
