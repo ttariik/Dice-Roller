@@ -1,16 +1,14 @@
-from flask import Flask
-from markupsafe import escape
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world() -> str:
-    return "<p>Hello, World!</p>"
+    return render_template("index.html")
 
 @app.route("/<name>")
 def personalized_hello(name: str) -> str:
-    safe_name = escape(name)
-    return f"Hello, {safe_name}"
+    return render_template("index.html", _name=name)
 
 @app.route("/dices")
 def show_dices() -> str:
